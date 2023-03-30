@@ -19,15 +19,16 @@ async function run() {
     await client.connect();
     const userCollection = client.db("foodExpress").collection("user");
 
-    app.post('/user', (req, res)=>{
+    app.post('/user', async(req, res)=>{
       const newUser = req.body;
       console.log('new user added ', newUser);
-      res.send('user added')
+      const result = await userCollection.insertOne(newUser);
+      res.send(result)
     })
 
   }
   finally {
-    await client.close();
+    // await client.close();
   }
 }
 
@@ -36,7 +37,7 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-  res.send('Hurrah!. My Node working with mongoDB baal kaj korenah')
+  res.send('Hurrah!. My Node working')
 })
 
 app.listen(port, () => {
